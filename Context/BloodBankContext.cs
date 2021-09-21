@@ -14,9 +14,9 @@ namespace bloodbank.Context {
         public DbSet<IncomingBlood> IncomingBlood { get; set; }
         public DbSet<OutgoingBlood> OutgoingBlood { get; set; }
         public DbSet<Hospital> Hospitals { get; set; }
-        public DbSet<Donor> Donor { get; set; }
+        public DbSet<Donor> Donors { get; set; }
         public DbSet<BloodTest> BloodTests { get; set; }
         public DbSet<Request> Requests { get; set; }
-        public DbSet<bloodbank.Models.Role> Role { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }
