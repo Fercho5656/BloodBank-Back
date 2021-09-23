@@ -47,9 +47,6 @@ namespace bloodbank.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BloodBankId")
-                        .HasColumnType("int");
-
                     b.Property<string>("BloodType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -63,9 +60,25 @@ namespace bloodbank.Migrations
 
                     b.HasKey("Id");
 
+                    b.ToTable("BloodGroups");
+                });
+
+            modelBuilder.Entity("bloodbank.Models.BloodGroup_BloodBank", b =>
+                {
+                    b.Property<int>("BloodGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BloodBankId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("BloodGroupId", "BloodBankId");
+
                     b.HasIndex("BloodBankId");
 
-                    b.ToTable("BloodGroups");
+                    b.ToTable("BloodGroups_BloodBanks");
                 });
 
             modelBuilder.Entity("bloodbank.Models.BloodTest", b =>
@@ -362,6 +375,49 @@ namespace bloodbank.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("bloodbank.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("BloodBankId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactInfoId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Fullname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BloodBankId");
+
+                    b.HasIndex("ContactInfoId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("bloodbank.Models.BloodBank", b =>
                 {
                     b.HasOne("bloodbank.Models.ContactInfo", "ContactInfo")
@@ -371,13 +427,23 @@ namespace bloodbank.Migrations
                     b.Navigation("ContactInfo");
                 });
 
-            modelBuilder.Entity("bloodbank.Models.BloodGroup", b =>
+            modelBuilder.Entity("bloodbank.Models.BloodGroup_BloodBank", b =>
                 {
                     b.HasOne("bloodbank.Models.BloodBank", "BloodBank")
-                        .WithMany()
-                        .HasForeignKey("BloodBankId");
+                        .WithMany("BloodGroups_BloodBanks")
+                        .HasForeignKey("BloodBankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("bloodbank.Models.BloodGroup", "BloodGroup")
+                        .WithMany("BloodGroups_BloodBanks")
+                        .HasForeignKey("BloodGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BloodBank");
+
+                    b.Navigation("BloodGroup");
                 });
 
             modelBuilder.Entity("bloodbank.Models.BloodTest", b =>
@@ -489,6 +555,37 @@ namespace bloodbank.Migrations
                     b.Navigation("BloodGroup");
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("bloodbank.Models.User", b =>
+                {
+                    b.HasOne("bloodbank.Models.BloodBank", "BloodBank")
+                        .WithMany()
+                        .HasForeignKey("BloodBankId");
+
+                    b.HasOne("bloodbank.Models.ContactInfo", "ContactInfo")
+                        .WithMany()
+                        .HasForeignKey("ContactInfoId");
+
+                    b.HasOne("bloodbank.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("BloodBank");
+
+                    b.Navigation("ContactInfo");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("bloodbank.Models.BloodBank", b =>
+                {
+                    b.Navigation("BloodGroups_BloodBanks");
+                });
+
+            modelBuilder.Entity("bloodbank.Models.BloodGroup", b =>
+                {
+                    b.Navigation("BloodGroups_BloodBanks");
                 });
 #pragma warning restore 612, 618
         }
