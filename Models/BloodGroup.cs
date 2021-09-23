@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace bloodbank.Models {
@@ -9,7 +10,7 @@ namespace bloodbank.Models {
         public char RH { get; set; }
         [Required]
         public int Quantity { get; set; }
-        [Required]
-        public BloodBank BloodBank { get; set; }
+
+        public virtual ICollection<BloodGroup_BloodBank> BloodGroups_BloodBanks { get; set; }
     }
 }
