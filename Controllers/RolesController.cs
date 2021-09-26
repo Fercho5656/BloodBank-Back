@@ -1,7 +1,3 @@
-using System.Runtime.InteropServices.ComTypes;
-using System.ComponentModel;
-using System.Net;
-using System.Linq;
 using System.Threading.Tasks;
 using bloodbank.Context;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +25,9 @@ namespace bloodbank.Controllers {
         }
         //GET/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> Get(int? id) {
+        public async Task<ActionResult> GetRole(int? id) {
             if (id == null) {
-                return NotFound();
+                return BadRequest();
             }
             Role role = await Context.Roles.FindAsync(id);
             if (role == null) {
