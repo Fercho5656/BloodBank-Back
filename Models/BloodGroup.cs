@@ -10,7 +10,6 @@ namespace bloodbank.Models {
         public char RH { get; set; }
         [Required]
         public int Quantity { get; set; }
-
-        public virtual ICollection<BloodGroup_BloodBank> BloodGroups_BloodBanks { get; set; }
+        public virtual List<BloodGroup_BloodBank> BloodGroups_BloodBanks { get; set; }
     }
 }
