@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bloodbank.Models {
     public class ContactInfo {
-        public string Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Address { get; set; }
         [Required]
