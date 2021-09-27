@@ -63,6 +63,9 @@ project.fragment.lock.json
 appsettings.json
 artifacts/
 
+#Migrations
+Migrations/
+
 # Tye
 .tye/
 
