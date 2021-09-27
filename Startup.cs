@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bloodbank.Context;
+using BloodBank_Backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,10 @@ namespace bloodbank {
 
             services.AddDbContext<BloodBankContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("dev")));
+
+            //Add Services
+            services.AddTransient<BloodBank_Backend.Services.RolesService>();
+            services.AddTransient<BloodBank_Backend.Services.ContactInfoService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c => {
