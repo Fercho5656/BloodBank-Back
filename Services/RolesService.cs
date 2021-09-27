@@ -11,12 +11,12 @@ namespace BloodBank_Backend.Services {
             _context = context;
         }
 
-        public async void AddRole(RoleVM role) {
+        public void AddRole(RoleVM role) {
             var _role = new Role() {
                 RoleName = role.RoleName
             };
-            await _context.Roles.AddAsync(_role);
-            await _context.SaveChangesAsync();
+            _context.Roles.Add(_role);
+            _context.SaveChanges();
         }
 
         public List<Role> GetAll() {
