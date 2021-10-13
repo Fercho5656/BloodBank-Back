@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 using bloodbank.Context;
 using BloodBank_Backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace bloodbank {
@@ -30,10 +24,13 @@ namespace bloodbank {
                 options.UseSqlServer(Configuration.GetConnectionString("dev")));
 
             //Add Services
-            services.AddTransient<BloodBank_Backend.Services.RolesService>();
-            services.AddTransient<BloodBank_Backend.Services.ContactInfoService>();
+            services.AddScoped<IRolesServices, RolesService>();
+            services.AddScoped<IContactInfoService, ContactInfoService>();
+            services.AddScoped<IBloodBankService, BloodBankService>();
 
-            services.AddControllers();
+            services.AddControllers()
+            .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "bloodbank", Version = "v1" });
             });
