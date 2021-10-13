@@ -1,6 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using bloodbank.Context;
 using bloodbank.Models;
+using BloodBank_Backend.Services;
+using BloodBank_Backend.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,69 +13,36 @@ namespace bloodbank.Controllers {
     [ApiController]
     [Route("api/[controller]")]
     public class BloodBanksController : ControllerBase {
-        private readonly BloodBankContext Context;
-        public BloodBanksController(BloodBankContext context) {
-            Context = context;
+        private readonly IBloodBankService _service;
+        private readonly IMapper _mapper;
+        public BloodBanksController(IBloodBankService service, IMapper mapper) {
+            _service = service;
+            _mapper = mapper;
         }
 
-        //GET
         [HttpGet]
-        public async Task<ActionResult> GetAll() {
-            var bloodBanks = await Context.BloodBanks.ToListAsync();
-            if (bloodBanks == null) {
-                return NoContent();
-            }
-            return Ok(bloodBanks);
+        public async Task<IActionResult> GetAll() {
+            var bloodBanks = await _service.GetAll(b => b.ContactInfo);
+            var bloodBanksVM = _mapper.Map<IEnumerable<BloodBank>, IEnumerable<BloodBankVM>>(bloodBanks);
+            return Ok(bloodBanksVM);
         }
 
-        //GET/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetBank(int? id) {
-            if (id == null) {
-                return BadRequest();
-            }
-            BloodBank bloodBank = await Context.BloodBanks.FindAsync(id);
-            if (bloodBank is null) {
-                return NotFound();
-            }
-            return Ok(bloodBank);
+        public async Task<IActionResult> Get(int id) {
+            var bloodBank = await _service.GetBloodBank(id);
+            if (bloodBank == null) return NotFound();
+            var bloodBankVM = _mapper.Map<BloodBank, BloodBankVM>(bloodBank);
+            return Ok(bloodBankVM);
         }
 
-        //POST
+
         [HttpPost]
-        public async Task<ActionResult> Create(BloodBank bloodBank) {
-            if (ModelState.IsValid) {
-                await Context.BloodBanks.AddAsync(bloodBank);
-                await Context.SaveChangesAsync();
-            }
-            return CreatedAtAction(nameof(Create), new { id = bloodBank.Id }, bloodBank);
+        public async Task<IActionResult> Add([FromBody] SaveBloodBankVM saveBloodBankVM) {
+            var bloodBank = _mapper.Map<SaveBloodBankVM, BloodBank>(saveBloodBankVM);
+            await _service.AddBloodBank(bloodBank);
+            var bloodBankVM = _mapper.Map<BloodBank, BloodBankVM>(bloodBank);
+            return CreatedAtAction(nameof(Add), new { id = bloodBankVM.Id }, bloodBankVM);
         }
 
-        //DELETE/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int? id) {
-            if (id == null) {
-                return BadRequest();
-            }
-            BloodBank bloodBank = await Context.BloodBanks.FindAsync(id);
-            if (bloodBank is null) {
-                return NotFound();
-            }
-            Context.BloodBanks.Remove(bloodBank);
-            await Context.SaveChangesAsync();
-            return NoContent();
-        }
-
-        //PUT/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int? id, BloodBank bloodBank) {
-            if (id == null || id != bloodBank.Id) {
-                return BadRequest();
-            }
-            Context.Entry(bloodBank).State = EntityState.Modified;
-            await Context.SaveChangesAsync();
-
-            return NoContent();
-        }
     }
 }

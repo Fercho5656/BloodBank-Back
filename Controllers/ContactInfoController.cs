@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using bloodbank.Context;
 using Microsoft.AspNetCore.Mvc;
@@ -5,46 +6,59 @@ using Microsoft.EntityFrameworkCore;
 using bloodbank.Models;
 using BloodBank_Backend.Services;
 using BloodBank_Backend.ViewModels;
+using AutoMapper;
 
 namespace bloodbank.Controllers {
 
     [ApiController]
     [Route("api/[controller]")]
     public class ContactInfoController : ControllerBase {
-        private readonly ContactInfoService _contactInfoService;
+        private readonly IContactInfoService _service;
+        private readonly IMapper _mapper;
 
-        public ContactInfoController(ContactInfoService contactInfoService) {
-            _contactInfoService = contactInfoService;
+        public ContactInfoController(IContactInfoService service, IMapper mapper) {
+            _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult GetAll() {
-            var contactInfo = _contactInfoService.GetAll();
-            return Ok(contactInfo);
+        public async Task<IActionResult> GetAll() {
+            var contactInfo = await _service.GetAll();
+            var contactInfoVM = _mapper.Map<IEnumerable<ContactInfo>, IEnumerable<ContactInfoVM>>(contactInfo);
+            return Ok(contactInfoVM);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetContactInfo(int id) {
-            var contactInfo = _contactInfoService.GetContactInfo(id);
-            return Ok(contactInfo);
+        public async Task<IActionResult> Get(int id) {
+            var contactInfo = await _service.Get(id);
+            if (contactInfo == null) return NotFound();
+            var contactInfoVM = _mapper.Map<ContactInfoVM>(contactInfo);
+            return Ok(contactInfoVM);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] ContactInfoVM contactInfo) {
-            _contactInfoService.AddContactInfo(contactInfo);
-            return Ok();
+        public async Task<IActionResult> Add([FromBody] SaveContactInfoVM saveContactInfoVM) {
+            var contactInfo = _mapper.Map<SaveContactInfoVM, ContactInfo>(saveContactInfoVM);
+            await _service.Add(contactInfo);
+            var contactInfoVM = _mapper.Map<ContactInfo, ContactInfoVM>(contactInfo);
+            return CreatedAtAction(nameof(Add), new { id = contactInfoVM.Id }, contactInfoVM);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] ContactInfoVM contactInfo) {
-            _contactInfoService.Update(id, contactInfo);
-            return Ok();
+        public async Task<IActionResult> Update(int id, SaveContactInfoVM newContactInfoVM) {
+            var newContactInfo = _mapper.Map<SaveContactInfoVM, ContactInfo>(newContactInfoVM);
+            newContactInfo.Id = id;
+            var result = await _service.Update(id, newContactInfo);
+            if (result == null) return NotFound();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id) {
-            _contactInfoService.Delete(id);
-            return Ok();
+        public async Task<IActionResult> Delete(int id) {
+            var contactInfo = await _service.Get(id);
+            if (contactInfo == null) return NotFound();
+            await _service.Delete(id);
+            return NoContent();
         }
     }
 }
