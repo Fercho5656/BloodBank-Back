@@ -6,6 +6,10 @@ namespace bloodbank.Context {
         public BloodBankContext() { }
         public BloodBankContext(DbContextOptions<BloodBankContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+            modelBuilder.Entity<BloodGroup_BloodBank>()
+            .HasKey(b => new { b.BloodBankId, b.BloodGroupId });
+
             modelBuilder.Entity<BloodGroup_BloodBank>()
             .HasOne(b => b.BloodBank)
             .WithMany(b => b.BloodGroups_BloodBanks)
@@ -15,6 +19,8 @@ namespace bloodbank.Context {
             .HasOne(b => b.BloodGroup)
             .WithMany(b => b.BloodGroups_BloodBanks)
             .HasForeignKey(b => b.BloodGroupId);
+
+            base.OnModelCreating(modelBuilder);
         }
         public DbSet<ContactInfo> ContactInfo { get; set; }
         public DbSet<Patient> Patients { get; set; }
