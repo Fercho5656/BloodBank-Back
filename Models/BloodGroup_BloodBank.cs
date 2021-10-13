@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bloodbank.Models {
     public class BloodGroup_BloodBank {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public int BloodGroupId { get; set; }
         public BloodGroup BloodGroup { get; set; }
 
