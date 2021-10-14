@@ -44,5 +44,21 @@ namespace bloodbank.Controllers {
             return CreatedAtAction(nameof(Add), new { id = bloodBankVM.Id }, bloodBankVM);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, SaveBloodBankVM newSaveBloodBankVM) {
+            var newBloodBank = _mapper.Map<SaveBloodBankVM, BloodBank>(newSaveBloodBankVM);
+            newBloodBank.Id = id;
+            var result = await _service.Update(id, newBloodBank);
+            if (result == null) return NotFound();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id) {
+            var bloodBank = await _service.Get(id);
+            if (bloodBank == null) return NotFound();
+            await _service.Delete(id);
+            return NoContent();
+        }
     }
 }
