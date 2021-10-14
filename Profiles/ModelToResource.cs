@@ -1,5 +1,6 @@
 using AutoMapper;
 using bloodbank.Models;
+using bloodbank.ViewModels;
 using BloodBank_Backend.ViewModels;
 
 namespace BloodBank_Backend.Profiles {
@@ -8,6 +9,7 @@ namespace BloodBank_Backend.Profiles {
             CreateMap<Role, RoleVM>();
             CreateMap<BloodBank, BloodBankVM>();
             CreateMap<ContactInfo, ContactInfoVM>();
+            CreateMap<User, UserVM>();
         }
     }
 }
