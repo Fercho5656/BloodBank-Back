@@ -12,10 +12,6 @@ namespace bloodbank.Models {
         public DateTime Date { get; set; }
 
         //Relationships
-        //Patient
-        public int? PatientId { get; set; }
-        [ForeignKey("PatientId")]
-        public Patient Patient { get; set; }
 
         //Hospital
         public int? HospitalId { get; set; }

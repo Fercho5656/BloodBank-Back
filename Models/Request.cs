@@ -14,10 +14,10 @@ namespace bloodbank.Models {
         public char Status { get; set; }
 
         //Relationships
-        //Patient
-        public int? PatientId { get; set; }
-        [ForeignKey("PatientId")]
-        public Patient Patient { get; set; }
+        //Hospital
+        public int? HospitalId { get; set; }
+        [ForeignKey("HospitalId")]
+        public Hospital Hospital { get; set; }
 
         //BloodGroup
         public int? BloodGroupId { get; set; }

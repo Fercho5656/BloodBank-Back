@@ -23,8 +23,9 @@ namespace bloodbank.Context {
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<ContactInfo> ContactInfo { get; set; }
-        public DbSet<Patient> Patients { get; set; }
-        public DbSet<Disease> Diseases { get; set; }
+
+        // public DbSet<Patient> Patients { get; set; }
+        // public DbSet<Disease> Diseases { get; set; }
         public DbSet<FamilyGroup> FamilyGroups { get; set; }
         public DbSet<BloodGroup> BloodGroups { get; set; }
         public DbSet<BloodBank> BloodBanks { get; set; }
