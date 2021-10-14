@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using bloodbank.Context;
+using bloodbank.Services;
 using BloodBank_Backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace bloodbank {
             services.AddScoped<IRolesServices, RolesService>();
             services.AddScoped<IContactInfoService, ContactInfoService>();
             services.AddScoped<IBloodBankService, BloodBankService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddControllers()
             .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
