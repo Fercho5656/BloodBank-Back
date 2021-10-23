@@ -11,11 +11,9 @@ namespace BloodBank_Backend.Services {
     public class BloodBankService : EntityBaseRepository<BloodBank>, IBloodBankService {
 
         private readonly BloodBankContext _context;
-        private readonly IContactInfoService _contactInfoService;
         private readonly IMapper _mapper;
-        public BloodBankService(BloodBankContext context, IContactInfoService contactInfoService, IMapper mapper) : base(context) {
+        public BloodBankService(BloodBankContext context, IMapper mapper) : base(context) {
             _context = context;
-            _contactInfoService = contactInfoService;
             _mapper = mapper;
         }
 
