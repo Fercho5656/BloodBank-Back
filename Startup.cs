@@ -21,6 +21,8 @@ namespace bloodbank {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
 
+            services.AddCors();
+
             services.AddDbContext<BloodBankContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("dev")));
 
@@ -29,6 +31,7 @@ namespace bloodbank {
             services.AddScoped<IContactInfoService, ContactInfoService>();
             services.AddScoped<IBloodBankService, BloodBankService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IHospitalService, HospitalService>();
 
             services.AddControllers()
             .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
@@ -51,6 +54,12 @@ namespace bloodbank {
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(opt => {
+                opt.WithOrigins("http://localhost:8080");
+                opt.AllowAnyMethod();
+                opt.AllowAnyHeader();
+            });
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
