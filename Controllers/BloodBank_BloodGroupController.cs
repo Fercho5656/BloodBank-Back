@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -21,28 +22,28 @@ namespace bloodbank.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> Get() {
-            var result = await _service.GetAll();
+            var result = await _service.GetAll(b => b.BloodGroup, b => b.BloodBank);
             var resultVM = _mapper.Map<IEnumerable<BloodBank_BloodGroupVM>>(result);
             return Ok(resultVM);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id) {
-            var result = await _service.Get(id);
+            var result = await _service.GetBloodBankById(id);
             if (result == null) return NotFound();
-            var resultVM = _mapper.Map<BloodBank_BloodGroupVM>(result);
+            var resultVM = _mapper.Map<IEnumerable<BloodBank_BloodGroupVM>>(result);
             return Ok(resultVM);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SaveBloodBank_BloodGroupVM model) {
             var bloodBank_BloodGroup = _mapper.Map<SaveBloodBank_BloodGroupVM, BloodGroup_BloodBank>(model);
-            if (!await _service.BloodBankExists(model.BloodBankId) || !await _service.BloodGroupExists(model.BloodGroupId)){
+            /* if (await _service.BloodBankExists(model.BloodBankId) || await _service.BloodGroupExists(model.BloodGroupId)){
                 return BadRequest("BloodBank or BloodGroup does not exist");
-            }
+            } */
             await _service.Add(bloodBank_BloodGroup);
-            var bloodBank_BloodGroupVM = _mapper.Map<BloodBank_BloodGroupVM>(bloodBank_BloodGroup);
-            return CreatedAtAction(nameof(Create), new { id = bloodBank_BloodGroupVM.Id }, bloodBank_BloodGroupVM);
+            var bloodBank_BloodGroupVM = _mapper.Map<BloodGroup_BloodBank, BloodBank_BloodGroupVM>(bloodBank_BloodGroup);
+            return CreatedAtAction(nameof(Create), new { id = bloodBank_BloodGroupVM.Id, bloodBank = bloodBank_BloodGroupVM.BloodBank }, bloodBank_BloodGroupVM);
         }
 
         [HttpPut("{id}")]
