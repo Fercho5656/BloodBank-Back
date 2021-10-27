@@ -8,6 +8,8 @@ namespace BloodBank_Backend.Profiles {
         public ModelToResource() {
             CreateMap<Role, RoleVM>();
             CreateMap<BloodBank, BloodBankVM>();
+            CreateMap<BloodGroup, BloodGroupVM>();
+            CreateMap<BloodGroup_BloodBank, BloodBank_BloodGroupVM>();
             CreateMap<ContactInfo, ContactInfoVM>();
             CreateMap<User, UserVM>();
             CreateMap<Hospital, HospitalVM>();
