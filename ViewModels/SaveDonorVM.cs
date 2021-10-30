@@ -1,7 +1,10 @@
+using System;
+
 namespace BloodBank_Backend.ViewModels {
     public class SaveDonorVM {
-        public int Id { get; set; }
         public string FullName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string ProfilePicURL { get; set; }
 
         //Relationships
         //BloodGroup
@@ -10,5 +13,7 @@ namespace BloodBank_Backend.ViewModels {
         //ContactInfo
         public int ContactInfoId { get; set; }
 
+        //BloodBank
+        public int BloodBankId { get; set; }
     }
 }
