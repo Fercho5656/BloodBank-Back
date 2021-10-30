@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,8 @@ namespace bloodbank.Models {
         public int Id { get; set; }
         [Required]
         public string FullName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string ProfilePicURL { get; set; }
 
         //Relationships
         //IncomingBlood
@@ -28,6 +31,10 @@ namespace bloodbank.Models {
         [ForeignKey("ContactInfoId")]
         public ContactInfo ContactInfo { get; set; }
 
+        //BloodBank
+        public int? BloodBankId { get; set; }
+        [ForeignKey("BloodBankId")]
+        public BloodBank BloodBank { get; set; }
 
     }
 }
