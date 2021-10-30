@@ -34,6 +34,7 @@ namespace bloodbank {
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IBloodGroupService, BloodGroupService>();
             services.AddScoped<IBloodBank_BloodGroupService, BloodBank_BloodGroupService>();
+            services.AddScoped<IDonorService, DonorService>();
 
             services.AddControllers()
             .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
