@@ -14,6 +14,7 @@ namespace BloodBank_Backend.Profiles {
             CreateMap<SaveUserVM, User>();
             CreateMap<SaveHospitalVM, Hospital>();
             CreateMap<SaveDonorVM, Donor>();
+            CreateMap<SaveRequestVM, Request>();
         }
     }
 }
