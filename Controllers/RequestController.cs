@@ -22,14 +22,14 @@ namespace BloodBank_Backend.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            var result = await _service.GetAll();
+            var result = await _service.GetAll(h => h.Hospital, b => b.BloodGroup);
             var resultVM = _mapper.Map<IEnumerable<RequestVM>>(result);
             return Ok(resultVM);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
-            var result = await _service.Get(id);
+            var result = await _service.Get(id, h => h.Hospital, b => b.BloodGroup);
             var resultVM = _mapper.Map<RequestVM>(result);
             return Ok(resultVM);
         }
@@ -38,8 +38,9 @@ namespace BloodBank_Backend.Controllers {
         public async Task<IActionResult> Create([FromBody] SaveRequestVM saveRequestVM) {
             var request = _mapper.Map<Request>(saveRequestVM);
             await _service.Add(request);
-            var resultVM = _mapper.Map<RequestVM>(request);
-            return CreatedAtAction(nameof(Create), new { id = resultVM.Id }, resultVM);
+            var result = await _service.Get(request.Id, h => h.Hospital, b => b.BloodGroup);
+            var resultVM = _mapper.Map<RequestVM>(result);
+            return CreatedAtAction(nameof(Create), new { id = resultVM.Id, hospital = resultVM.Hospital, bloodGroup = resultVM.BloodGroup }, resultVM);
         }
 
         [HttpPut("{id}")]
