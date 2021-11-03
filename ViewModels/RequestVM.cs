@@ -5,7 +5,7 @@ namespace BloodBank_Backend.ViewModels {
         public int Id { get; set; }
         public int Quantity { get; set; }
         public bool Active { get; set; }
-        public char Status { get; set; }
+        public string Status { get; set; }
 
         //Relationships
         //Hospital
