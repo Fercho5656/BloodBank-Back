@@ -49,8 +49,9 @@ namespace BloodBank_Backend.Controllers {
             request.Id = id;
             var result = await _service.Update(id, request);
             if (result == null) return NotFound();
-            var resultVM = _mapper.Map<RequestVM>(request);
-            return Ok(resultVM);
+            var newResult = await _service.Get(id, h => h.Hospital, b => b.BloodGroup);
+            var newResultVM = _mapper.Map<RequestVM>(newResult);
+            return Ok(newResultVM);
         }
 
         [HttpDelete("{id}")]
