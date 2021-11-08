@@ -1,3 +1,4 @@
+using System;
 using bloodbank.ViewModels;
 
 namespace BloodBank_Backend.ViewModels {
@@ -6,7 +7,8 @@ namespace BloodBank_Backend.ViewModels {
         public int Quantity { get; set; }
         public bool Active { get; set; }
         public string Status { get; set; }
-
+        public DateTime Date { get; set; }
+        
         //Relationships
         //Hospital
         public HospitalVM Hospital { get; set; }

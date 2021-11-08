@@ -12,6 +12,7 @@ namespace bloodbank.Models {
         public bool Active { get; set; }
         [Required]
         public string Status { get; set; }
+        public DateTime Date { get; set; }
 
         //Relationships
         //Hospital
