@@ -21,7 +21,12 @@ namespace bloodbank {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
 
-            services.AddCors();
+            services.AddCors(options => {
+                options.AddPolicy("CorsPolicy", builder =>
+                builder.AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowAnyOrigin());
+            });
 
             services.AddDbContext<BloodBankContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("dev")));
@@ -55,17 +60,13 @@ namespace bloodbank {
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "bloodbank v1"));
             }
 
+            app.UseCors("CorsPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseCors(opt => {
-                opt.WithOrigins("http://localhost:8080");
-                opt.AllowAnyMethod();
-                opt.AllowAnyHeader();
-            });
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
