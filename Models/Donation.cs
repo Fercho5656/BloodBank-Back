@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using BloodBank_Backend.Base;
 
 namespace bloodbank.Models {
-    public class IncomingBlood : IEntityBase {
+    public class Donation : IEntityBase {
         public int Id { get; set; }
         [Required]
         public int Quantity { get; set; }
