@@ -17,7 +17,7 @@ namespace bloodbank.Models {
         //Relationships
 
         //IncomingBlood
-        public IncomingBlood IncomingBloods { get; set; }
+        public Donation Donation { get; set; }
 
         //Donor
         public int? DonorId { get; set; }
