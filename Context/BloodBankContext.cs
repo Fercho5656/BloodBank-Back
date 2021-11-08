@@ -30,7 +30,7 @@ namespace bloodbank.Context {
         public DbSet<BloodGroup> BloodGroups { get; set; }
         public DbSet<BloodBank> BloodBanks { get; set; }
         public DbSet<BloodGroup_BloodBank> BloodGroups_BloodBanks { get; set; }
-        public DbSet<IncomingBlood> IncomingBlood { get; set; }
+        public DbSet<Donation> Donations { get; set; }
         public DbSet<OutgoingBlood> OutgoingBlood { get; set; }
         public DbSet<Hospital> Hospitals { get; set; }
         public DbSet<Donor> Donors { get; set; }
