@@ -14,6 +14,9 @@ namespace BloodBank_Backend.ViewModels {
 
         //BloodGroup
         public int BloodGroupId { get; set; }
+        
+        //BloodBank
+        public int BloodBankId { get; set; }
 
     }
 }

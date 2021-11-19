@@ -17,6 +17,9 @@ namespace bloodbank.Models {
         //Donor
         public List<Donor> Donors { get; set; }
 
+        //Request
+        public List<Request> Requests { get; set; }
+
         //ContactInfo
         public int? ContactInfoId { get; set; }
         [ForeignKey("ContactInfoId")]

@@ -16,5 +16,8 @@ namespace BloodBank_Backend.ViewModels {
         //BloodGroup
         public BloodGroupVM BloodGroup { get; set; }
 
+        //BloodBank
+        public BloodBankVM BloodBank { get; set; }
+
     }
 }

@@ -24,5 +24,10 @@ namespace bloodbank.Models {
         public int? BloodGroupId { get; set; }
         [ForeignKey("BloodGroupId")]
         public BloodGroup BloodGroup { get; set; }
+        
+        //BloodBank
+        public int? BloodBankId { get; set; }
+        [ForeignKey("BloodBankId")]
+        public BloodBank BloodBank { get; set; }
     }
 }
