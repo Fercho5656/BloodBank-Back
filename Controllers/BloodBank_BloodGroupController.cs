@@ -20,6 +20,7 @@ namespace bloodbank.Controllers {
             _mapper = mapper;
         }
 
+        // GET: api/BloodBank_BloodGroup
         [HttpGet]
         public async Task<IActionResult> Get() {
             var result = await _service.GetAll(b => b.BloodGroup, b => b.BloodBank);
@@ -27,6 +28,7 @@ namespace bloodbank.Controllers {
             return Ok(resultVM);
         }
 
+        // GET: api/BloodBank_BloodGroup/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id) {
             var result = await _service.GetBloodBankById(id);
@@ -35,6 +37,7 @@ namespace bloodbank.Controllers {
             return Ok(resultVM);
         }
 
+        // POST: api/BloodBank_BloodGroup
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SaveBloodBank_BloodGroupVM model) {
             var bloodBank_BloodGroup = _mapper.Map<SaveBloodBank_BloodGroupVM, BloodGroup_BloodBank>(model);
@@ -46,6 +49,7 @@ namespace bloodbank.Controllers {
             return CreatedAtAction(nameof(Create), new { id = bloodBank_BloodGroupVM.Id, bloodBank = bloodBank_BloodGroupVM.BloodBank }, bloodBank_BloodGroupVM);
         }
 
+        // PUT: api/BloodBank_BloodGroup/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] SaveBloodBank_BloodGroupVM model) {
             var bloodBank_BloodGroup = _mapper.Map<BloodGroup_BloodBank>(model);
@@ -55,6 +59,7 @@ namespace bloodbank.Controllers {
             return NoContent();
         }
 
+        // DELETE: api/BloodBank_BloodGroup/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) {
             var result = await _service.Get(id);

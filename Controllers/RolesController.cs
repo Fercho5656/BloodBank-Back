@@ -22,6 +22,7 @@ namespace bloodbank.Controllers {
             _mapper = mapper;
         }
 
+        // GET: api/Roles
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             var roles = await _service.GetAll();
@@ -29,6 +30,7 @@ namespace bloodbank.Controllers {
             return Ok(rolesVM);
         }
 
+        // GET: api/Roles/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRole(int id) {
             var role = await _service.Get(id);
@@ -37,6 +39,7 @@ namespace bloodbank.Controllers {
             return Ok(roleVM);
         }
 
+        // POST: api/Roles
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] SaveRoleVM saveRoleVM) {
             var role = _mapper.Map<SaveRoleVM, Role>(saveRoleVM);
@@ -45,6 +48,7 @@ namespace bloodbank.Controllers {
             return CreatedAtAction(nameof(Add), new { id = roleVM.Id }, roleVM);
         }
 
+        // PUT: api/Roles/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] SaveRoleVM newRoleVM) {
             var newRole = _mapper.Map<SaveRoleVM, Role>(newRoleVM);
@@ -54,6 +58,7 @@ namespace bloodbank.Controllers {
             return NoContent();
         }
 
+        // DELETE: api/Roles/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) {
             var role = await _service.Get(id);

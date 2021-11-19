@@ -19,6 +19,7 @@ namespace bloodbank.Controllers {
             _mapper = mapper;
         }
 
+        // GET: api/users
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             var users = await _service.GetAll(b => b.BloodBank, c => c.ContactInfo, r => r.Role);
@@ -26,6 +27,7 @@ namespace bloodbank.Controllers {
             return Ok(usersVM);
         }
 
+        // GET: api/users/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id) {
             var user = await _service.GetUser(id);
@@ -34,6 +36,7 @@ namespace bloodbank.Controllers {
             return Ok(userVM);
         }
 
+        // POST: api/users
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] SaveUserVM saveUserVM) {
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(saveUserVM.Password);
@@ -44,6 +47,7 @@ namespace bloodbank.Controllers {
             return CreatedAtAction(nameof(Add), new { id = userVM.Id }, userVM);
         }
 
+        // PUT: api/users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, SaveUserVM saveUserVM) {
             var newHashedPassword = BCrypt.Net.BCrypt.HashPassword(saveUserVM.Password);
@@ -55,6 +59,7 @@ namespace bloodbank.Controllers {
             return NoContent();
         }
 
+        // DELETE: api/users/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) {
             var user = await _service.Get(id);

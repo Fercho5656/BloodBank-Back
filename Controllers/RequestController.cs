@@ -20,6 +20,7 @@ namespace BloodBank_Backend.Controllers {
             _mapper = mapper;
         }
 
+        // GET: api/Request
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             var result = await _service.GetAll(h => h.Hospital, b => b.BloodGroup);
@@ -27,6 +28,7 @@ namespace BloodBank_Backend.Controllers {
             return Ok(resultVM);
         }
 
+        // GET: api/Request/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
             var result = await _service.Get(id, h => h.Hospital, b => b.BloodGroup);
@@ -34,6 +36,7 @@ namespace BloodBank_Backend.Controllers {
             return Ok(resultVM);
         }
 
+        // POST: api/Request
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SaveRequestVM saveRequestVM) {
             var request = _mapper.Map<Request>(saveRequestVM);
@@ -43,6 +46,7 @@ namespace BloodBank_Backend.Controllers {
             return CreatedAtAction(nameof(Create), new { id = resultVM.Id, hospital = resultVM.Hospital, bloodGroup = resultVM.BloodGroup }, resultVM);
         }
 
+        // PUT: api/Request/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] SaveRequestVM saveRequestVM) {
             var request = _mapper.Map<Request>(saveRequestVM);
@@ -54,6 +58,7 @@ namespace BloodBank_Backend.Controllers {
             return Ok(newResultVM);
         }
 
+        // DELETE: api/Request/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) {
             var request = await _service.Get(id);
