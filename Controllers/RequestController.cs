@@ -23,7 +23,7 @@ namespace BloodBank_Backend.Controllers {
         // GET: api/Request
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            var result = await _service.GetAll(h => h.Hospital, b => b.BloodGroup);
+            var result = await _service.GetAll(h => h.Hospital, b => b.BloodGroup, b => b.BloodBank);
             var resultVM = _mapper.Map<IEnumerable<RequestVM>>(result);
             return Ok(resultVM);
         }
@@ -31,7 +31,7 @@ namespace BloodBank_Backend.Controllers {
         // GET: api/Request/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
-            var result = await _service.Get(id, h => h.Hospital, b => b.BloodGroup);
+            var result = await _service.Get(id, h => h.Hospital, b => b.BloodGroup, b => b.BloodBank);
             var resultVM = _mapper.Map<RequestVM>(result);
             return Ok(resultVM);
         }
@@ -41,9 +41,9 @@ namespace BloodBank_Backend.Controllers {
         public async Task<IActionResult> Create([FromBody] SaveRequestVM saveRequestVM) {
             var request = _mapper.Map<Request>(saveRequestVM);
             await _service.Add(request);
-            var result = await _service.Get(request.Id, h => h.Hospital, b => b.BloodGroup);
+            var result = await _service.Get(request.Id, h => h.Hospital, b => b.BloodGroup, b => b.BloodBank);
             var resultVM = _mapper.Map<RequestVM>(result);
-            return CreatedAtAction(nameof(Create), new { id = resultVM.Id, hospital = resultVM.Hospital, bloodGroup = resultVM.BloodGroup }, resultVM);
+            return CreatedAtAction(nameof(Create), new { id = resultVM.Id, hospital = resultVM.Hospital, bloodGroup = resultVM.BloodGroup, bloodBank = resultVM.BloodBank }, resultVM);
         }
 
         // PUT: api/Request/5
@@ -53,7 +53,7 @@ namespace BloodBank_Backend.Controllers {
             request.Id = id;
             var result = await _service.Update(id, request);
             if (result == null) return NotFound();
-            var newResult = await _service.Get(id, h => h.Hospital, b => b.BloodGroup);
+            var newResult = await _service.Get(id, h => h.Hospital, b => b.BloodGroup, b => b.BloodBank);
             var newResultVM = _mapper.Map<RequestVM>(newResult);
             return Ok(newResultVM);
         }
