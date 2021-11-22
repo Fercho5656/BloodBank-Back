@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -21,7 +22,7 @@ namespace BloodBank_Backend.Controllers {
         // GET: api/Donation
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            var donations = await _service.GetAll(d => d.Donor, b => b.BloodTest);
+            var donations = await _service.GetAll(d => d.Donor, b => b.BloodTest, d => d.Donor.BloodGroup);
             var donationsVM = _mapper.Map<IEnumerable<Donation>, IEnumerable<DonationVM>>(donations);
             return Ok(donationsVM);
         }
@@ -29,7 +30,7 @@ namespace BloodBank_Backend.Controllers {
         // GET: api/Donation/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id) {
-            var donation = await _service.Get(id, d => d.Donor, b => b.BloodTest);
+            var donation = await _service.Get(id, d => d.Donor, b => b.BloodTest, d => d.Donor.BloodGroup);
             if (donation == null) return NotFound();
             var donationVM = _mapper.Map<Donation, DonationVM>(donation);
             return Ok(donationVM);
